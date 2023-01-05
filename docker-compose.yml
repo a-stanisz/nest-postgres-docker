@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./
+      args:
+        - NODE_ENV=${NODE_ENV}
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+      - 9229:9229
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./src:/opt/node_app/src
+      - ./test:/opt/node_app/test
+      - ./package.json:/opt/node_app/package.json
+      - ./package-lock.json:/opt/node_app/package-lock.json
+      - ./tsconfig.json:/opt/node_app/tsconfig.json
+      - ./tsconfig.build.json:/opt/node_app/tsconfig.build.json
+      - ./nest-cli.json:/opt/node_app/nest-cli.json
+      - notused:/opt/node_app/node_modules
+    command: npm run start:dev
+  db:
+    image: postgres
+    healthcheck:
+      test: pg_isready -h 127.0.0.1
+      interval: 5s
+      start_period: 10s
+      timeout: 4s
+      retries: 3
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+volumes:
+  notused:
