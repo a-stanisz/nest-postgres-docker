@@ -11,6 +11,11 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       PORT: ${PORT}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_DATABASE: ${DB_DATABASE}
     depends_on:
       db:
         condition: service_healthy
@@ -23,7 +28,7 @@ services:
       - ./tsconfig.build.json:/opt/node_app/tsconfig.build.json
       - ./nest-cli.json:/opt/node_app/nest-cli.json
       - notused:/opt/node_app/node_modules
-    command: npm run start:dev
+    command: npm run start:debug
   db:
     image: postgres
     healthcheck:
@@ -34,9 +39,11 @@ services:
       retries: 3
     restart: always
     ports:
-      - 5432:5432
+      - ${DB_PORT}:${DB_PORT}
+    user: ${DB_USERNAME}
     environment:
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USERNAME: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
   pgadmin:
     image: dpage/pgadmin4
     restart: always
