@@ -5,6 +5,7 @@ services:
       args:
         - NODE_ENV=${NODE_ENV}
       dockerfile: Dockerfile
+      target: dev
     ports:
       - ${PORT}:${PORT}
       - 9229:9229
