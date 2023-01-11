@@ -2,18 +2,27 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "compose-exec-attach",
+      "label": "compose build",
+      "type": "shell",
+      "command": "docker compose build"
+    },
+    {
+      "label": "compose up",
+      "type": "shell",
+      "command": "docker compose up -d",
+      "dependsOn": "compose build"
+    },
+    {
+      "label": "compose restart backend",
+      "type": "shell",
+      "command": "docker compose restart backend",
+      "dependsOn": "compose up"
+    },
+    {
+      "label": "compose exec atttach",
       "type": "shell",
       "command": "docker container attach --no-stdin nest-postgres-docker-backend-1",
-      "isBackground": true,
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "focus": false,
-        "panel": "dedicated",
-        "showReuseMessage": true,
-        "clear": false
-      }
+      "dependsOn": "compose build"
     }
   ]
 }

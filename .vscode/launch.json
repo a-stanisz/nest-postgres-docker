@@ -2,7 +2,15 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Docker: Node attach 9229",
+      "name": "Docker: launch backend",
+      "type": "docker",
+      "request": "launch",
+      "preLaunchTask": "compose up",
+      "platform": "node",
+      "debugServer": 9229
+    },
+    {
+      "name": "Docker: node attach 9229",
       "type": "node",
       "request": "attach",
       "skipFiles": ["<node_internals>/**"],
