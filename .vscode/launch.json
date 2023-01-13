@@ -3,11 +3,11 @@
   "configurations": [
     {
       "name": "Docker: launch backend",
-      "type": "docker",
+      "type": "node",
       "request": "launch",
-      "preLaunchTask": "compose up",
-      "platform": "node",
-      "debugServer": 9229
+      "preLaunchTask": "compose-up",
+      "debugServer": 9229,
+      "console": "integratedTerminal"
     },
     {
       "name": "Docker: node attach 9229",
@@ -26,6 +26,8 @@
         "${workspaceFolder}/**",
         "!**/node_modules/**"
       ]
+      // "autoAttachChildProcesses": true,
+      // "trace": true
     }
   ]
 }

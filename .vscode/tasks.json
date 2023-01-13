@@ -2,27 +2,33 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "compose build",
+      "label": "compose-build",
       "type": "shell",
       "command": "docker compose build"
     },
     {
-      "label": "compose up",
-      "type": "shell",
-      "command": "docker compose up -d",
-      "dependsOn": "compose build"
+      "label": "compose-up",
+      "type": "docker-run",
+      // "command": "docker compose up -d",
+      "dockerRun": {
+        "command": "nest start --debug 0.0.0.0:9229"
+      },
+      "dependsOn": "compose-build",
+      "node": {
+        "enableDebugging": true
+      }
     },
     {
-      "label": "compose restart backend",
+      "label": "compose-restart-backend",
       "type": "shell",
       "command": "docker compose restart backend",
-      "dependsOn": "compose up"
+      "dependsOn": "compose-up"
     },
     {
-      "label": "compose exec atttach",
+      "label": "compose-exec-atttach",
       "type": "shell",
       "command": "docker container attach --no-stdin nest-postgres-docker-backend-1",
-      "dependsOn": "compose build"
+      "dependsOn": "compose-build"
     }
   ]
 }

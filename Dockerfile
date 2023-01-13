@@ -1,4 +1,6 @@
-FROM node:18.12-bullseye-slim as base
+FROM node:18.13-bullseye-slim as base
+
+EXPOSE 3000 9229
 
 ARG NODE_ENV=production
 ENV NODE_ENV $NODE_ENV
